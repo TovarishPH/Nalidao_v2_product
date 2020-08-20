@@ -4,11 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.nalidao.v2.product.domain.Product;
-import com.nalidao.v2.product.domain.dto.ProductDto;
 import com.nalidao.v2.product.gateway.ProductGateway;
 
 
@@ -37,6 +35,18 @@ public class ProductService {
 		} catch (Exception e) {
 			System.out.println("Deu merda!");
 		}
+		return null;
+	}
+
+	public Product updateProduct(Product product) {
+		Optional<Product> entity = this.gateway.findProductById(product.getId());
+		if(entity.isPresent()) {
+//			entity.get().setName(product.getName());
+//			entity.get().setPrice(product.getPrice());
+//			entity.get().setAmount(product.getAmount());
+			return this.gateway.createProduct(product);
+		}
+		
 		return null;
 	}
 

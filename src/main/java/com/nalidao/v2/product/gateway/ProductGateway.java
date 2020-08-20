@@ -20,7 +20,6 @@ public class ProductGateway {
 	}
 
 	public List<Product> findall() {
-		// TODO Auto-generated method stub
 		return this.repository.findAll();
 	}
 
