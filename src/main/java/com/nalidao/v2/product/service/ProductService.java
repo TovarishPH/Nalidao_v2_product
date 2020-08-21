@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nalidao.v2.product.domain.Product;
+import com.nalidao.v2.product.errorhandling.exception.ProductNotFoundException;
 import com.nalidao.v2.product.gateway.ProductGateway;
 
 
@@ -21,7 +22,12 @@ public class ProductService {
 	private ProductGateway gateway;
 
 	public Optional<Product> getProductById(long id) {
-		return this.gateway.findProductById(id);
+		Optional<Product> product = this.gateway.findProductById(id);
+		if(product.isPresent()) {
+			return this.gateway.findProductById(id);
+		}
+		
+		throw new ProductNotFoundException("Produto com id " + id + " não encontrado na base de dados");
 	}
 
 	public List<Product> findall() {
@@ -41,13 +47,10 @@ public class ProductService {
 	public Product updateProduct(Product product) {
 		Optional<Product> entity = this.gateway.findProductById(product.getId());
 		if(entity.isPresent()) {
-//			entity.get().setName(product.getName());
-//			entity.get().setPrice(product.getPrice());
-//			entity.get().setAmount(product.getAmount());
 			return this.gateway.createProduct(product);
 		}
 		
-		return null;
+		throw new ProductNotFoundException("Id " + product.getId() + " não encontrado na base de dados, para atualização de produto.");
 	}
 
 }
