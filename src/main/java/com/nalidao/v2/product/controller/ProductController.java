@@ -3,6 +3,8 @@ package com.nalidao.v2.product.controller;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,16 +58,15 @@ public class ProductController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ProductDto> createProduct(@RequestBody final CreateProductDto dto, UriComponentsBuilder builder) {
+	public ResponseEntity<ProductDto> createProduct(@RequestBody @Valid final CreateProductDto dto, UriComponentsBuilder builder) {
 		Product entity = new Product();
 		entity = this.service.createProduct(this.createProductConverter.convert(dto));
 		ProductDto productDto = this.productToDtoConverter.convert(entity);
 		URI uri = builder.path("/product-api/{id}").buildAndExpand(productDto.getId()).toUri();
 		return ResponseEntity.created(uri).body(productDto);
 	}
-	
 	@PutMapping
-	public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto dto) {
+	public ResponseEntity<ProductDto> updateProduct(@RequestBody @Valid ProductDto dto) {
 		Product product = this.productDtoToEntity.convert(dto);
 		ProductDto responseDto = this.productToDtoConverter.convert(this.service.updateProduct(product));
 		return ResponseEntity.ok(responseDto);

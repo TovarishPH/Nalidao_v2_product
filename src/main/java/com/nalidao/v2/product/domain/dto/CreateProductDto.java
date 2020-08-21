@@ -20,4 +20,15 @@ public class CreateProductDto {
 
 	@PositiveOrZero(message = "'Amount' não pode ser um número negativo.")
 	private int amount;
+
+	public CreateProductDto(
+			@NotEmpty(message = "'Name' não pode ser vazio.") @Length(min = 4, message = "'Name' deve conter ao menos 4 caracteres.") String name,
+			@Positive(message = "'Price' deve ser maior que zero.") double price,
+			@PositiveOrZero(message = "'Amount' não pode ser um número negativo.") int amount) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.amount = amount;
+	}
+	
 }

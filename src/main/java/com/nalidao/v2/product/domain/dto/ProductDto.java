@@ -11,7 +11,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class ProductDto {
 
@@ -26,5 +25,16 @@ public class ProductDto {
 	
 	@PositiveOrZero(message = "'Amount' não pode ser um número negativo.")
 	private int amount;
+
+	public ProductDto(long id,
+			@NotEmpty(message = "'Name' não pode ser vazio.") @Length(min = 4, message = "'Name' deve conter ao menos 4 caracteres.") String name,
+			@Positive(message = "'Price' deve ser maior que zero.") double price,
+			@PositiveOrZero(message = "'Amount' não pode ser um número negativo.") int amount) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.amount = amount;
+	}
 	
 }
