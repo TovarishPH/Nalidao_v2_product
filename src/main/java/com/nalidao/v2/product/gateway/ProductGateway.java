@@ -26,6 +26,10 @@ public class ProductGateway {
 	public Product createProduct(Product entity) {
 		return this.repository.save(entity);
 	}
+
+	public void removeProduct(Long id) {
+		this.repository.deleteById(id);
+	}
 	
 	
 }

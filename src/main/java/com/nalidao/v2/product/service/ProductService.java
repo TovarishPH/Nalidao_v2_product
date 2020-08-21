@@ -53,4 +53,13 @@ public class ProductService {
 		throw new ProductNotFoundException("Id " + product.getId() + " não encontrado na base de dados, para atualização de produto.");
 	}
 
+	public void removeProduct(Long id) {
+		Optional<Product> product = this.gateway.findProductById(id);
+		if(product.isPresent()) {
+			this.gateway.removeProduct(id);
+		} else {
+			throw new ProductNotFoundException("Id " + id + " não encontrado. Não é possível efetuar a remoção deste produto.");
+		}
+	}
+
 }
