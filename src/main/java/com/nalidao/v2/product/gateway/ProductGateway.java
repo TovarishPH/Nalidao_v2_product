@@ -19,7 +19,7 @@ public class ProductGateway {
 		return this.repository.findById(id);
 	}
 
-	public List<Product> findall() {
+	public List<Product> findAll() {
 		return this.repository.findAll();
 	}
 

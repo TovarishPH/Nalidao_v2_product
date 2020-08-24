@@ -31,7 +31,7 @@ public class ProductService {
 	}
 
 	public List<Product> findall() {
-		return this.gateway.findall();
+		return this.gateway.findAll();
 	}
 
 	public Product createProduct(Product entity) {
