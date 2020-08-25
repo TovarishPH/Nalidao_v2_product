@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.nalidao.v2.product.domain.Product;
 import com.nalidao.v2.product.errorhandling.exception.ProductNotFoundException;
