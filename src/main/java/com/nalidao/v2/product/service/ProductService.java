@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.nalidao.v2.product.domain.Product;
 import com.nalidao.v2.product.errorhandling.exception.ProductNotFoundException;
@@ -35,13 +36,8 @@ public class ProductService {
 	}
 
 	public Product createProduct(Product entity) {
-		try {
-			Product product = this.gateway.saveProduct(entity);
-			return product;
-		} catch (Exception e) {
-			System.out.println("Deu merda!");
-		}
-		return null;
+		Product product = this.gateway.saveProduct(entity);
+		return product;
 	}
 
 	public Product updateProduct(Product product) {
