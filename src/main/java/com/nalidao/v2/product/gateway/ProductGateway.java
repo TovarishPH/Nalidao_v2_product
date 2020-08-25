@@ -23,7 +23,7 @@ public class ProductGateway {
 		return this.repository.findAll();
 	}
 
-	public Product createProduct(Product entity) {
+	public Product saveProduct(Product entity) {
 		return this.repository.save(entity);
 	}
 

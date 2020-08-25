@@ -36,7 +36,7 @@ public class ProductService {
 
 	public Product createProduct(Product entity) {
 		try {
-			Product product = this.gateway.createProduct(entity);
+			Product product = this.gateway.saveProduct(entity);
 			return product;
 		} catch (Exception e) {
 			System.out.println("Deu merda!");
@@ -47,7 +47,7 @@ public class ProductService {
 	public Product updateProduct(Product product) {
 		Optional<Product> entity = this.gateway.findProductById(product.getId());
 		if(entity.isPresent()) {
-			return this.gateway.createProduct(product);
+			return this.gateway.saveProduct(product);
 		}
 		
 		throw new ProductNotFoundException("Id " + product.getId() + " não encontrado na base de dados, para atualização de produto.");
