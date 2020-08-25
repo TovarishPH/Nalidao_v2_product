@@ -6,6 +6,7 @@ import java.util.Random;
 
 import com.github.javafaker.Faker;
 import com.nalidao.v2.product.domain.Product;
+import com.nalidao.v2.product.domain.dto.ProductDto;
 
 public class TestUtils {
 	
@@ -33,5 +34,12 @@ public class TestUtils {
 				new Random().nextInt()));
 		
 		return list;
+	}
+	
+	public ProductDto getProductDto() {
+		return new ProductDto(1L,
+				getFaker().lorem().characters(7),
+				getFaker().random().nextDouble(),
+				getFaker().random().nextInt(0,100));
 	}
 }
