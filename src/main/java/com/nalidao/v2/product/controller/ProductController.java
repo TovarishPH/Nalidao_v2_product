@@ -25,12 +25,16 @@ import com.nalidao.v2.product.utils.ConvertCreateProductDtoToEntity;
 import com.nalidao.v2.product.utils.ConvertDtoToProductEntity;
 import com.nalidao.v2.product.utils.ConvertProductEntityToDto;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 /**
  * Controller da api de produto
  * @author paulo
  */
 @RestController
 @RequestMapping("/product-api")
+@Api(value = "Api de Produtos")
 public class ProductController {
 	
 	@Autowired
@@ -46,17 +50,20 @@ public class ProductController {
 	private ConvertCreateProductDtoToEntity createProductConverter;
 	
 	@GetMapping
+	@ApiOperation(value = "Lista todos os produtos cadastrados")
 	public List<ProductDto> getAllProduct() {
 		return this.productToDtoConverter.convertList(this.service.findall());
 	}
 
 	@GetMapping("/{id}")
-	public ProductDto getProductById(@PathVariable final long id) {
+	@ApiOperation(value = "Busca por produto baseada no id do mesmo")
+	public ProductDto getProductById(@PathVariable("id") final long id) {
 		Product product = this.service.getProductById(id).get();
 		return this.productToDtoConverter.convert(product);
 	}
 	
 	@PostMapping
+	@ApiOperation(value = "Cria um novo produto na base de dados")
 	public ResponseEntity<ProductDto> createProduct(@RequestBody @Valid final CreateProductDto dto, UriComponentsBuilder builder) {
 		Product entity = new Product();
 		entity = this.service.createProduct(this.createProductConverter.convert(dto));
@@ -65,6 +72,7 @@ public class ProductController {
 		return ResponseEntity.created(uri).body(productDto);
 	}
 	@PutMapping
+	@ApiOperation(value = "Update de produto previamente cadastrado")
 	public ResponseEntity<ProductDto> updateProduct(@RequestBody @Valid ProductDto dto) {
 		Product product = this.productDtoToEntity.convert(dto);
 		ProductDto responseDto = this.productToDtoConverter.convert(this.service.updateProduct(product));
@@ -72,7 +80,8 @@ public class ProductController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> removeProduct(@PathVariable Long id) {
+	@ApiOperation(value = "Deletea um produto da base de dados")
+	public ResponseEntity<?> removeProduct(@PathVariable("id") long id) {
 		this.service.removeProduct(id);
 		return ResponseEntity.ok("Produto id " + id + " removido da base de dados.");
 	}
