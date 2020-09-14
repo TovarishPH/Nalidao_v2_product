@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nalidao.v2.product.domain.Product;
+import com.nalidao.v2.product.domain.dto.CreateProductDto;
 import com.nalidao.v2.product.domain.dto.ProductDto;
 import com.nalidao.v2.product.errorhandling.exception.ProductNotFoundException;
 import com.nalidao.v2.product.gateway.ProductGateway;
+import com.nalidao.v2.product.utils.ConvertCreateProductDtoToEntity;
 import com.nalidao.v2.product.utils.ConvertProductEntityToDto;
 
 
@@ -26,11 +28,14 @@ public class ProductService {
 	@Autowired
 	private ConvertProductEntityToDto productToDtoConverter;
 	
+	@Autowired
+	private ConvertCreateProductDtoToEntity createProductConverter;
+	
 	public List<ProductDto> findall() {
 		return this.productToDtoConverter.convertList(this.gateway.findAll());
 	}
 
-	public ProductDto getProductById(long id) {
+	public ProductDto getProductById(final long id) {
 		Optional<Product> product = this.gateway.findProductById(id);
 		if(product.isPresent()) {
 			return this.productToDtoConverter.convert(product.get());
@@ -39,9 +44,10 @@ public class ProductService {
 		throw new ProductNotFoundException("Produto com id " + id + " não encontrado na base de dados");
 	}
 
-	public Product createProduct(Product entity) {
-		Product product = this.gateway.saveProduct(entity);
-		return product;
+	public ProductDto createProduct(final CreateProductDto dto) {
+		Product product = this.gateway.saveProduct(this.createProductConverter.convert(dto));
+		ProductDto prodDto = this.productToDtoConverter.convert(product);
+		return prodDto;
 	}
 
 	public Product updateProduct(Product product) {

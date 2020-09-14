@@ -111,12 +111,9 @@ public class ProductControllerTest {
 	@Test
 	public void testCreateProductReturnCreated() throws Exception {
 		CreateProductDto createDto = new CreateProductDto("testName", 2.5, 3);
-		Product prod = this.utils.getProduct();
 		ProductDto dto = this.utils.getProductDto();
-		
-		when(this.convertCreateProductDtoToEntity.convert(createDto)).thenReturn(prod);
-		when(this.service.createProduct(prod)).thenReturn(prod);
-		when(this.convertEntityToDto.convert(prod)).thenReturn(dto);
+
+		when(this.service.createProduct(createDto)).thenReturn(dto);
 		
 		ResultActions result = mockMvc.perform(post("/product-api")
 												.contentType(MediaType.APPLICATION_JSON)

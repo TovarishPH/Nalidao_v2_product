@@ -65,9 +65,7 @@ public class ProductController {
 	@PostMapping
 	@ApiOperation(value = "Cria um novo produto na base de dados")
 	public ResponseEntity<ProductDto> createProduct(@RequestBody @Valid final CreateProductDto dto, UriComponentsBuilder builder) {
-		Product entity = new Product();
-		entity = this.service.createProduct(this.createProductConverter.convert(dto));
-		ProductDto productDto = this.productToDtoConverter.convert(entity);
+		ProductDto productDto = this.service.createProduct(dto);
 		URI uri = builder.path("/product-api/{id}").buildAndExpand(productDto.getId()).toUri();
 		return ResponseEntity.created(uri).body(productDto);
 	}

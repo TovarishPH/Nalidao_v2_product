@@ -14,11 +14,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nalidao.v2.product.domain.Product;
+import com.nalidao.v2.product.domain.dto.CreateProductDto;
 import com.nalidao.v2.product.domain.dto.ProductDto;
 import com.nalidao.v2.product.errorhandling.exception.ProductNotFoundException;
 import com.nalidao.v2.product.gateway.ProductGateway;
+import com.nalidao.v2.product.utils.ConvertCreateProductDtoToEntity;
 import com.nalidao.v2.product.utils.ConvertProductEntityToDto;
 import com.nalidao.v2.product.utils.TestUtils;
 
@@ -32,6 +35,8 @@ public class ProductServiceTest {
 	private ProductGateway gateway;
 	@Mock
 	private ConvertProductEntityToDto convertEntityToDto;
+	@Mock
+	private ConvertCreateProductDtoToEntity createProductConverter;
 	
 	private TestUtils utils = new TestUtils();
 	
@@ -75,13 +80,17 @@ public class ProductServiceTest {
 	
 	@Test
 	public void testCreateProduct() {
+		CreateProductDto createDto = this.utils.getCreateProductDto();
 		Product prod = this.utils.getProduct();
+		ProductDto prodDto = this.utils.getProductDto();
+		when(this.createProductConverter.convert(createDto)).thenReturn(prod);
 		when(this.gateway.saveProduct(prod)).thenReturn(prod);
+		when(this.convertEntityToDto.convert(prod)).thenReturn(prodDto);
 		
-		Product createdProd = this.service.createProduct(prod);
+		ProductDto createdDto = this.service.createProduct(createDto);
 		
-		assertThat(createdProd).isNotNull();
-		assertThat(createdProd).isEqualTo(prod);
+		assertThat(createdDto).isNotNull();
+		assertThat(createdDto).isEqualTo(prodDto);
 	}
 	
 	@Test
