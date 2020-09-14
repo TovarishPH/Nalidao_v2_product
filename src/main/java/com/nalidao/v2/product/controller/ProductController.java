@@ -71,9 +71,8 @@ public class ProductController {
 	}
 	@PutMapping
 	@ApiOperation(value = "Update de produto previamente cadastrado")
-	public ResponseEntity<ProductDto> updateProduct(@RequestBody @Valid ProductDto dto) {
-		Product product = this.productDtoToEntity.convert(dto);
-		ProductDto responseDto = this.productToDtoConverter.convert(this.service.updateProduct(product));
+	public ResponseEntity<ProductDto> updateProduct(@RequestBody @Valid final ProductDto dto) {
+		ProductDto responseDto = this.service.updateProduct(dto);
 		return ResponseEntity.ok(responseDto);
 	}
 	

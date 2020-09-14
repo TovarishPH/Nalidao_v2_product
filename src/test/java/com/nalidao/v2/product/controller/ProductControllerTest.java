@@ -127,11 +127,8 @@ public class ProductControllerTest {
 	@Test
 	public void testUpdateProductReturnOk() throws Exception {
 		ProductDto dto = this.utils.getProductDto();
-		Product prod = this.utils.getProduct();
 		
-		when(this.convertDtoToEntity.convert(dto)).thenReturn(prod);
-		when(this.service.updateProduct(prod)).thenReturn(prod);
-		when(this.convertEntityToDto.convert(prod)).thenReturn(dto);
+		when(this.service.updateProduct(dto)).thenReturn(dto);
 		
 		ResultActions result = mockMvc.perform(put("/product-api")
 												.contentType(MediaType.APPLICATION_JSON)
@@ -145,10 +142,8 @@ public class ProductControllerTest {
 	@Test
 	public void testUpdateProductReturnNotFound() throws Exception {
 		ProductDto dto = this.utils.getProductDto();
-		Product prod = this.utils.getProduct();
 		
-		when(this.convertDtoToEntity.convert(dto)).thenReturn(prod);
-		when(this.service.updateProduct(prod)).thenThrow(ProductNotFoundException.class);
+		when(this.service.updateProduct(dto)).thenThrow(ProductNotFoundException.class);
 		
 		ResultActions result = mockMvc.perform(put("/product-api")
 												.contentType(MediaType.APPLICATION_JSON)

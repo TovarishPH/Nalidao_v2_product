@@ -12,6 +12,7 @@ import com.nalidao.v2.product.domain.dto.ProductDto;
 import com.nalidao.v2.product.errorhandling.exception.ProductNotFoundException;
 import com.nalidao.v2.product.gateway.ProductGateway;
 import com.nalidao.v2.product.utils.ConvertCreateProductDtoToEntity;
+import com.nalidao.v2.product.utils.ConvertDtoToProductEntity;
 import com.nalidao.v2.product.utils.ConvertProductEntityToDto;
 
 
@@ -27,9 +28,11 @@ public class ProductService {
 	
 	@Autowired
 	private ConvertProductEntityToDto productToDtoConverter;
-	
 	@Autowired
-	private ConvertCreateProductDtoToEntity createProductConverter;
+	private ConvertCreateProductDtoToEntity createProductDtoToEntityConverter;
+	@Autowired
+	private ConvertDtoToProductEntity productDtoToEntity;
+	
 	
 	public List<ProductDto> findall() {
 		return this.productToDtoConverter.convertList(this.gateway.findAll());
@@ -45,18 +48,20 @@ public class ProductService {
 	}
 
 	public ProductDto createProduct(final CreateProductDto dto) {
-		Product product = this.gateway.saveProduct(this.createProductConverter.convert(dto));
+		Product product = this.gateway.saveProduct(this.createProductDtoToEntityConverter.convert(dto));
 		ProductDto prodDto = this.productToDtoConverter.convert(product);
 		return prodDto;
 	}
 
-	public Product updateProduct(Product product) {
-		Optional<Product> entity = this.gateway.findProductById(product.getId());
+	public ProductDto updateProduct(final ProductDto productDto) {
+		Optional<Product> entity = this.gateway.findProductById(productDto.getId());
 		if(entity.isPresent()) {
-			return this.gateway.saveProduct(product);
+			Product prod = this.productDtoToEntity.convert(productDto);
+			
+			return this.productToDtoConverter.convert(this.gateway.saveProduct(prod));
 		}
 		
-		throw new ProductNotFoundException("Id " + product.getId() + " não encontrado na base de dados, para atualização de produto.");
+		throw new ProductNotFoundException("Id " + productDto.getId() + " não encontrado na base de dados, para atualização de produto.");
 	}
 
 	public void removeProduct(Long id) {

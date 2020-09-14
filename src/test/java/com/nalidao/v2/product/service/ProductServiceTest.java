@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.nalidao.v2.product.domain.Product;
 import com.nalidao.v2.product.domain.dto.CreateProductDto;
@@ -22,6 +23,7 @@ import com.nalidao.v2.product.domain.dto.ProductDto;
 import com.nalidao.v2.product.errorhandling.exception.ProductNotFoundException;
 import com.nalidao.v2.product.gateway.ProductGateway;
 import com.nalidao.v2.product.utils.ConvertCreateProductDtoToEntity;
+import com.nalidao.v2.product.utils.ConvertDtoToProductEntity;
 import com.nalidao.v2.product.utils.ConvertProductEntityToDto;
 import com.nalidao.v2.product.utils.TestUtils;
 
@@ -37,6 +39,8 @@ public class ProductServiceTest {
 	private ConvertProductEntityToDto convertEntityToDto;
 	@Mock
 	private ConvertCreateProductDtoToEntity createProductConverter;
+	@Mock
+	private ConvertDtoToProductEntity convertDtoToEntity;
 	
 	private TestUtils utils = new TestUtils();
 	
@@ -96,13 +100,15 @@ public class ProductServiceTest {
 	@Test
 	public void testUpdateProduct() {
 		Product prod = this.utils.getProduct();
-		Product updatedProduct = new Product(prod.getId(), prod.getName(), prod.getPrice(), prod.getAmount());
+		ProductDto updatedProduct = new ProductDto(prod.getId(), prod.getName(), prod.getPrice(), prod.getAmount());
 		updatedProduct.setName("updated name");
 		
 		when(this.gateway.findProductById(prod.getId())).thenReturn(Optional.of(prod));
-		when(this.gateway.saveProduct(updatedProduct)).thenReturn(updatedProduct);
+		when(this.convertDtoToEntity.convert(updatedProduct)).thenReturn(prod);
+		when(this.gateway.saveProduct(prod)).thenReturn(prod);
+		when(this.convertEntityToDto.convert(prod)).thenReturn(updatedProduct);
 		
-		Product finalProduct = this.service.updateProduct(updatedProduct);
+		ProductDto finalProduct = this.service.updateProduct(updatedProduct);
 		
 		assertThat(finalProduct).isNotNull();
 		assertThat(finalProduct).isEqualTo(updatedProduct);
@@ -111,12 +117,12 @@ public class ProductServiceTest {
 	
 	@Test
 	public void testUpdateThrowsProductNotFoundException() {
-		Product prod = this.utils.getProduct();
+		ProductDto prodDto = this.utils.getProductDto();
 		Throwable thrown = ThrowableAssert.catchThrowable(() -> {
-			this.service.updateProduct(prod);
+			this.service.updateProduct(prodDto);
 		});
 		
-		assertThat(thrown).isInstanceOf(ProductNotFoundException.class).hasMessage("Id " + prod.getId() + " não encontrado na base de dados, para atualização de produto.");
+		assertThat(thrown).isInstanceOf(ProductNotFoundException.class).hasMessage("Id " + prodDto.getId() + " não encontrado na base de dados, para atualização de produto.");
 		
 	}
 	
