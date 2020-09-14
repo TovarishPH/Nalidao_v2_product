@@ -15,19 +15,19 @@ public class ProductGateway {
 	@Autowired
 	private ProductRepository repository;
 
-	public Optional<Product> findProductById(long id) {
-		return this.repository.findById(id);
-	}
-
 	public List<Product> findAll() {
 		return this.repository.findAll();
 	}
 
-	public Product saveProduct(Product entity) {
+	public Optional<Product> findProductById(final long id) {
+		return this.repository.findById(id);
+	}
+
+	public Product saveProduct(final Product entity) {
 		return this.repository.save(entity);
 	}
 
-	public void removeProduct(Long id) {
+	public void removeProduct(final long id) {
 		this.repository.deleteById(id);
 	}
 	

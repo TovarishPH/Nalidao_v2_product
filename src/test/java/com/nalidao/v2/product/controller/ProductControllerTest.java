@@ -1,14 +1,16 @@
 package com.nalidao.v2.product.controller;
 
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-
-import static org.mockito.Mockito.when;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,29 +18,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultHandler;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nalidao.v2.product.domain.Product;
 import com.nalidao.v2.product.domain.dto.CreateProductDto;
 import com.nalidao.v2.product.domain.dto.ProductDto;
 import com.nalidao.v2.product.errorhandling.exception.ProductNotFoundException;
 import com.nalidao.v2.product.gateway.ProductGateway;
 import com.nalidao.v2.product.repository.ProductRepository;
 import com.nalidao.v2.product.service.ProductService;
-import com.nalidao.v2.product.utils.ConvertCreateProductDtoToEntity;
-import com.nalidao.v2.product.utils.ConvertDtoToProductEntity;
-import com.nalidao.v2.product.utils.ConvertProductEntityToDto;
 import com.nalidao.v2.product.utils.TestUtils;
 
 @ExtendWith(SpringExtension.class)
@@ -51,12 +40,6 @@ public class ProductControllerTest {
 	private ProductGateway gateway;
 	@MockBean
 	private ProductRepository repository;
-	@MockBean
-	private ConvertProductEntityToDto convertEntityToDto;
-	@MockBean
-	private ConvertCreateProductDtoToEntity convertCreateProductDtoToEntity;
-	@MockBean
-	private ConvertDtoToProductEntity convertDtoToEntity;
 	
 	@Autowired
 	private MockMvc mockMvc;

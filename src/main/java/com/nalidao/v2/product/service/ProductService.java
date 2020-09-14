@@ -64,7 +64,7 @@ public class ProductService {
 		throw new ProductNotFoundException("Id " + productDto.getId() + " não encontrado na base de dados, para atualização de produto.");
 	}
 
-	public void removeProduct(Long id) {
+	public void removeProduct(final long id) {
 		Optional<Product> product = this.gateway.findProductById(id);
 		if(product.isPresent()) {
 			this.gateway.removeProduct(id);

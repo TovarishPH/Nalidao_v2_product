@@ -17,13 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.nalidao.v2.product.domain.Product;
 import com.nalidao.v2.product.domain.dto.CreateProductDto;
 import com.nalidao.v2.product.domain.dto.ProductDto;
 import com.nalidao.v2.product.service.ProductService;
-import com.nalidao.v2.product.utils.ConvertCreateProductDtoToEntity;
-import com.nalidao.v2.product.utils.ConvertDtoToProductEntity;
-import com.nalidao.v2.product.utils.ConvertProductEntityToDto;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,15 +35,6 @@ public class ProductController {
 	
 	@Autowired
 	private ProductService service;
-	
-	@Autowired
-	private ConvertProductEntityToDto productToDtoConverter;
-	
-	@Autowired
-	private ConvertDtoToProductEntity productDtoToEntity;
-	
-	@Autowired
-	private ConvertCreateProductDtoToEntity createProductConverter;
 	
 	@GetMapping
 	@ApiOperation(value = "Lista todos os produtos cadastrados")
@@ -78,7 +65,7 @@ public class ProductController {
 	
 	@DeleteMapping("/{id}")
 	@ApiOperation(value = "Deletea um produto da base de dados")
-	public ResponseEntity<?> removeProduct(@PathVariable("id") long id) {
+	public ResponseEntity<?> removeProduct(@PathVariable("id") final long id) {
 		this.service.removeProduct(id);
 		return ResponseEntity.ok("Produto id " + id + " removido da base de dados.");
 	}
