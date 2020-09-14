@@ -15,8 +15,12 @@ public class TestUtils {
 	}
 	
 	public Product getProduct() {
+//		return new Product(1L,
+//				getFaker().lorem().characters(7),
+//				getFaker().random().nextDouble(),
+//				getFaker().random().nextInt(0,100));
 		return new Product(1L,
-				getFaker().lorem().characters(7),
+				getFaker().funnyName().name(),
 				getFaker().random().nextDouble(),
 				getFaker().random().nextInt(0,100));
 	}
@@ -24,12 +28,12 @@ public class TestUtils {
 	public List<Product> getProductList() {
 		List<Product> list = new ArrayList<Product>();
 		list.add(new Product(1L,
-				getFaker().funnyName().toString(),
+				getFaker().funnyName().name(),
 				new Random().nextDouble(),
 				new Random().nextInt()));
 		
 		list.add(new Product(2L,
-				getFaker().funnyName().toString(),
+				getFaker().funnyName().name(),
 				new Random().nextDouble(),
 				new Random().nextInt()));
 		
@@ -37,9 +41,28 @@ public class TestUtils {
 	}
 	
 	public ProductDto getProductDto() {
+//		return new ProductDto(1L,
+//				getFaker().lorem().characters(7),
+//				getFaker().random().nextDouble(),
+//				getFaker().random().nextInt(0,100));
 		return new ProductDto(1L,
-				getFaker().lorem().characters(7),
+				getFaker().funnyName().name(),
 				getFaker().random().nextDouble(),
 				getFaker().random().nextInt(0,100));
+	}
+	
+	public List<ProductDto> getProductDtoList() {
+		List<ProductDto> dtoList = new ArrayList<ProductDto>();
+		dtoList.add(new ProductDto(1L,
+				getFaker().funnyName().name(),
+				new Random().nextDouble(),
+				new Random().nextInt()));
+		
+		dtoList.add(new ProductDto(2L,
+				getFaker().funnyName().name(),
+				new Random().nextDouble(),
+				new Random().nextInt()));
+		
+		return dtoList;
 	}
 }

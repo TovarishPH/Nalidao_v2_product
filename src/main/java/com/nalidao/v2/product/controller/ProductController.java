@@ -52,7 +52,7 @@ public class ProductController {
 	@GetMapping
 	@ApiOperation(value = "Lista todos os produtos cadastrados")
 	public List<ProductDto> getAllProduct() {
-		return this.productToDtoConverter.convertList(this.service.findall());
+		return this.service.findall();
 	}
 
 	@GetMapping("/{id}")

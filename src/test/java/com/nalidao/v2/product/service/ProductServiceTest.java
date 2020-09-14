@@ -16,8 +16,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.nalidao.v2.product.domain.Product;
+import com.nalidao.v2.product.domain.dto.ProductDto;
 import com.nalidao.v2.product.errorhandling.exception.ProductNotFoundException;
 import com.nalidao.v2.product.gateway.ProductGateway;
+import com.nalidao.v2.product.utils.ConvertProductEntityToDto;
 import com.nalidao.v2.product.utils.TestUtils;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,19 +30,23 @@ public class ProductServiceTest {
 	
 	@Mock
 	private ProductGateway gateway;
+	@Mock
+	private ConvertProductEntityToDto convertEntityToDto;
 	
 	private TestUtils utils = new TestUtils();
 	
 	@Test
 	public void findAllProductList() {
 		List<Product> list = this.utils.getProductList();
+		List<ProductDto> dtoList = this.utils.getProductDtoList();
 		when(this.gateway.findAll()).thenReturn(list);
+		when(this.convertEntityToDto.convertList(list)).thenReturn(dtoList);
 		
-		List<Product> foundList = this.service.findall();
+		List<ProductDto> foundList = this.service.findall();
 		
 		assertThat(foundList).isNotNull().isNotEmpty();
-		assertThat(foundList.size()).isEqualTo(list.size());
-		assertThat(foundList).isSameAs(list);
+		assertThat(foundList.size()).isEqualTo(dtoList.size());
+		assertThat(foundList).isSameAs(dtoList);
 	}
 	
 	@Test

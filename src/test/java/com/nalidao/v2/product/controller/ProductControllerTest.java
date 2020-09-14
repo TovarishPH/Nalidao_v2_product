@@ -67,7 +67,7 @@ public class ProductControllerTest {
 	
 	@Test
 	public void testWhenProductListRetunsOk() throws Exception {
-		List<Product> list = this.utils.getProductList();
+		List<ProductDto> list = this.utils.getProductDtoList();
 		
 		when(this.service.findall()).thenReturn(list);
 		

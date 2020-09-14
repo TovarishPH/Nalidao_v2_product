@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nalidao.v2.product.domain.Product;
+import com.nalidao.v2.product.domain.dto.ProductDto;
 import com.nalidao.v2.product.errorhandling.exception.ProductNotFoundException;
 import com.nalidao.v2.product.gateway.ProductGateway;
+import com.nalidao.v2.product.utils.ConvertProductEntityToDto;
 
 
 /**
@@ -20,6 +22,9 @@ public class ProductService {
 
 	@Autowired
 	private ProductGateway gateway;
+	
+	@Autowired
+	private ConvertProductEntityToDto productToDtoConverter;
 
 	public Optional<Product> getProductById(long id) {
 		Optional<Product> product = this.gateway.findProductById(id);
@@ -30,8 +35,8 @@ public class ProductService {
 		throw new ProductNotFoundException("Produto com id " + id + " não encontrado na base de dados");
 	}
 
-	public List<Product> findall() {
-		return this.gateway.findAll();
+	public List<ProductDto> findall() {
+		return this.productToDtoConverter.convertList(this.gateway.findAll());
 	}
 
 	public Product createProduct(Product entity) {
