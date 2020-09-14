@@ -81,11 +81,9 @@ public class ProductControllerTest {
 	@Test
 	public void testFindProductByIdReturnsOk() throws Exception {
 		ProductDto dto = this.utils.getProductDto();
-		Product prod = this.utils.getProduct();
 		long id = 1l;
 
-		when(this.service.getProductById(id)).thenReturn(Optional.of(prod));
-		when(this.convertEntityToDto.convert(prod)).thenReturn(dto);
+		when(this.service.getProductById(id)).thenReturn(dto);
 		
 		ResultActions result = mockMvc.perform(get("/product-api/{id}", id)
 												.accept(MediaType.APPLICATION_JSON)

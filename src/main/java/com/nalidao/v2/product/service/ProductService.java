@@ -25,18 +25,18 @@ public class ProductService {
 	
 	@Autowired
 	private ConvertProductEntityToDto productToDtoConverter;
+	
+	public List<ProductDto> findall() {
+		return this.productToDtoConverter.convertList(this.gateway.findAll());
+	}
 
-	public Optional<Product> getProductById(long id) {
+	public ProductDto getProductById(long id) {
 		Optional<Product> product = this.gateway.findProductById(id);
 		if(product.isPresent()) {
-			return this.gateway.findProductById(id);
+			return this.productToDtoConverter.convert(product.get());
 		}
 		
 		throw new ProductNotFoundException("Produto com id " + id + " não encontrado na base de dados");
-	}
-
-	public List<ProductDto> findall() {
-		return this.productToDtoConverter.convertList(this.gateway.findAll());
 	}
 
 	public Product createProduct(Product entity) {

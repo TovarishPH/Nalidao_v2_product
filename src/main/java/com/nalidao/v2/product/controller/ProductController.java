@@ -57,9 +57,9 @@ public class ProductController {
 
 	@GetMapping("/{id}")
 	@ApiOperation(value = "Busca por produto baseada no id do mesmo")
-	public ProductDto getProductById(@PathVariable("id") final long id) {
-		Product product = this.service.getProductById(id).get();
-		return this.productToDtoConverter.convert(product);
+	public ResponseEntity<ProductDto> getProductById(@PathVariable("id") final long id) {
+		ProductDto product = this.service.getProductById(id);
+		return ResponseEntity.ok(product);
 	}
 	
 	@PostMapping

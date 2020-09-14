@@ -52,13 +52,15 @@ public class ProductServiceTest {
 	@Test
 	public void testFindProductById() {
 		Product prod = this.utils.getProduct();
+		ProductDto prodDto = this.utils.getProductDto();
 		long id = 1L;
 		when(this.gateway.findProductById(id)).thenReturn(Optional.of(prod));
+		when(this.convertEntityToDto.convert(prod)).thenReturn(prodDto);
 		
-		Product foundProd = this.service.getProductById(id).get();
+		ProductDto foundProdDto = this.service.getProductById(id);
 		
-		assertThat(foundProd).isNotNull();
-		assertThat(foundProd).isEqualTo(prod);
+		assertThat(foundProdDto).isNotNull();
+		assertThat(foundProdDto).isEqualTo(prodDto);
 	}
 	
 	@Test
